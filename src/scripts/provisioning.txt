@@ -1,0 +1,5 @@
+docker run -d --name m1 -p 27017:27017 -e MONGO_INITDB_ROOT_USERNAME=testdb -e MONGO_INITDB_ROOT_PASSWORD=secretsauce mongo
+
+db.review.createIndex({ 
+    postedDate: -1 
+},{ background: true} )
