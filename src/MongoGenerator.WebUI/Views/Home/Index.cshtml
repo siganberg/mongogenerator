@@ -1,0 +1,26 @@
+﻿@model object
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+
+<script type="text/javascript">
+    function copy() {
+        var element = document.getElementById("script");
+        var content = element.value;
+        var el = document.createElement('textarea');
+        el.value = content;
+        el.setAttribute('readonly', '');
+        el.style.position = 'absolute';
+        el.style.left = '-9999px';
+        document.body.appendChild(el);
+        el.select();
+        document.execCommand('copy');
+        document.body.removeChild(el);
+    }
+</script>
+
+<div>Index creation script</div>
+<button onclick="copy()">Copy</button>
+<textarea id="script" style="width: 100%; height: 90%">@Html.Raw(ViewBag.Script)</textarea>
