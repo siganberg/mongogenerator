@@ -22,6 +22,7 @@ namespace MongoGenerator.Core
                 cm.MapMember(c => c.Background).SetElementName("background");
                 cm.MapMember(c => c.TextIndexVersion).SetElementName("textIndexVersion");
                 cm.MapMember(c => c.Weights).SetElementName("weights");
+                cm.MapMember(c => c.Unique).SetElementName("unique");
 
 
             });

@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Extensions.Logging;
@@ -28,28 +28,34 @@ namespace MongoGenerator.Core
                 var indexes = docs.Select(a => BsonSerializer.Deserialize<IndexEntity>(a));
                 AppendAndLog(builder, $"//-- {c} collection");
                 foreach (var index in indexes.Where(a => a.Name != "_id_"))
-                {
-                    if (index.Weights != null)
-                    {
-                        AppendAndLog(builder, $"db.{c}.createIndex({index.Weights.ToString().Replace("1","\"text\"")}, {{ background:true }});");
-
-                    }
-                    else
-                    {
-                        AppendAndLog(builder, $"db.{c}.createIndex({index.Key}, {{ background:true }});");
-
-                    }
-
-                }
+                    AppendAndLog(builder, $"db.{c}.createIndex({GetFields(index)}{GetOptions(index)});");
                 AppendAndLog(builder, "");
             }
             return builder.ToString();
         }
 
-        private void AppendAndLog(StringBuilder builder, string content)
+        private string GetFields(IndexEntity index)
+        {
+            return index.Weights != null 
+                ? index.Weights.ToString().Replace("1", "\"text\"") 
+                : index.Key.ToString();
+        }
+
+        private string GetOptions(IndexEntity index)
+        {
+            var option = new List<string>();
+            if (index.Background)
+                option.Add("background : \"true\"");
+            if (index.Unique)
+                option.Add("unique : \"true\"");
+            if (option.Count == 0) return "";
+            return ", { " + string.Join(", ", option) + " }";
+        }
+
+        private void AppendAndLog(StringBuilder builder, string content, bool showLog = true)
         {
             builder.AppendLine(content);
-            if (string.IsNullOrEmpty(content)) return;
+            if (string.IsNullOrEmpty(content) || showLog == false) return;
             _logger.LogInformation(content);
         }
     }

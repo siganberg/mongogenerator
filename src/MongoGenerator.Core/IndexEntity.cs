@@ -12,5 +12,6 @@ namespace MongoGenerator.Core
         public int? TextIndexVersion { get; set; }
 
         public BsonDocument Weights { get; set; }
+        public bool Unique { get; set; }
     }
 }
