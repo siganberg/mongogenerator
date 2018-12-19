@@ -25,7 +25,7 @@ namespace MongoGenerator.Core.Services
             var builder = new StringBuilder();
             foreach (var c in db.ListCollectionNamesAsync().Result.ToListAsync().Result)
             {
-                var docs = db.GetCollection<BsonDocument>(c).Indexes.ListAsync().Result.ToListAsync().Result;
+                var docs = db.GetCollection<BsonDocument>(c).Indexes.List().ToList();
                 var indexes = docs.Select(a => BsonSerializer.Deserialize<IndexEntity>(a));
                 AppendAndLog(builder, $"//-- {c} collection");
                 foreach (var index in indexes.Where(a => a.Name != "_id_"))
