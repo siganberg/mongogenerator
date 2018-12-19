@@ -20,6 +20,10 @@ namespace MongoGenerator.Core
                 cm.MapMember(c => c.CollectionName).SetElementName("ns");
                 cm.MapMember(c => c.Name).SetElementName("name");
                 cm.MapMember(c => c.Background).SetElementName("background");
+                cm.MapMember(c => c.TextIndexVersion).SetElementName("textIndexVersion");
+                cm.MapMember(c => c.Weights).SetElementName("weights");
+
+
             });
         }
     }

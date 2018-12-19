@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Text;
 using Microsoft.Extensions.Logging;
 using MongoDB.Bson;
@@ -25,10 +26,21 @@ namespace MongoGenerator.Core
             {
                 var docs = db.GetCollection<BsonDocument>(c).Indexes.ListAsync().Result.ToListAsync().Result;
                 var indexes = docs.Select(a => BsonSerializer.Deserialize<IndexEntity>(a));
-
                 AppendAndLog(builder, $"//-- {c} collection");
-                foreach(var index in indexes.Where(a => a.Name != "_id_"))
-                    AppendAndLog(builder, $"db.{c}.createIndex({{{index.Key}}}, {{ background:true }});");
+                foreach (var index in indexes.Where(a => a.Name != "_id_"))
+                {
+                    if (index.Weights != null)
+                    {
+                        AppendAndLog(builder, $"db.{c}.createIndex({index.Weights.ToString().Replace("1","\"text\"")}, {{ background:true }});");
+
+                    }
+                    else
+                    {
+                        AppendAndLog(builder, $"db.{c}.createIndex({index.Key}, {{ background:true }});");
+
+                    }
+
+                }
                 AppendAndLog(builder, "");
             }
             return builder.ToString();
@@ -37,7 +49,7 @@ namespace MongoGenerator.Core
         private void AppendAndLog(StringBuilder builder, string content)
         {
             builder.AppendLine(content);
-            if (string.IsNullOrEmpty(content)) return; 
+            if (string.IsNullOrEmpty(content)) return;
             _logger.LogInformation(content);
         }
     }

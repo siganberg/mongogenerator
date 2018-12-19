@@ -9,5 +9,8 @@ namespace MongoGenerator.Core
         public string Name { get; set; }
         public string CollectionName { get; set; }
         public bool Background { get; set; }
+        public int? TextIndexVersion { get; set; }
+
+        public BsonDocument Weights { get; set; }
     }
 }
