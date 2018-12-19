@@ -1,23 +1,22 @@
 ﻿using System;
-using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using MongoGenerator.Core;
-using MongoGenerator.WebUI.Models;
+using MongoGenerator.Core.Services;
 
 namespace MongoGenerator.WebUI.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly IIndexServices _indexService;
+        private readonly IGeneratorServices _generator;
 
-        public HomeController(IIndexServices indexService)
+        public HomeController(IGeneratorServices generator)
         {
-            _indexService = indexService;
+            _generator = generator;
         }
 
         public IActionResult Index()
         {
-            ViewBag.Script = _indexService.Generate().Replace(Environment.NewLine, "&#13;&#10");
+            ViewBag.Script = _generator.GenerateIndexes().Replace(Environment.NewLine, "&#13;&#10");
             return View();
         }
 

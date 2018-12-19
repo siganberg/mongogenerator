@@ -5,20 +5,21 @@ using Microsoft.Extensions.Logging;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
+using MongoGenerator.Core.Data.Entities;
 
-namespace MongoGenerator.Core
+namespace MongoGenerator.Core.Services
 {
-    public class IndexServices : IIndexServices
+    public class GeneratorServices : IGeneratorServices
     {
         private readonly IMongoClient _client;
-        private readonly ILogger<IndexServices> _logger;
-        public IndexServices(IMongoClient client, ILogger<IndexServices> logger)
+        private readonly ILogger<GeneratorServices> _logger;
+        public GeneratorServices(IMongoClient client, ILogger<GeneratorServices> logger)
         {
             _client = client;
             _logger = logger;
         }
 
-        public string Generate()
+        public string GenerateIndexes()
         {
             var db = _client.GetDatabase("ugc");
             var builder = new StringBuilder();

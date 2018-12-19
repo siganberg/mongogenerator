@@ -1,6 +1,6 @@
 ﻿using MongoDB.Bson;
 
-namespace MongoGenerator.Core
+namespace MongoGenerator.Core.Data.Entities
 {
     public class IndexEntity
     {

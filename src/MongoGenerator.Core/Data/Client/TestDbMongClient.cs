@@ -1,8 +1,9 @@
 ﻿using Microsoft.Extensions.Configuration;
 using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
+using MongoGenerator.Core.Data.Entities;
 
-namespace MongoGenerator.Core
+namespace MongoGenerator.Core.Data.Client
 {
     public class TestDbMongClient : MongoClient
     {
