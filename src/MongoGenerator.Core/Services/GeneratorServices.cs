@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Extensions.Logging;
@@ -23,6 +24,9 @@ namespace MongoGenerator.Core.Services
         {
             var db = _client.GetDatabase("ugc");
             var builder = new StringBuilder();
+            AppendAndLog(builder, $"//-- Generated on {DateTime.Now}");
+            AppendAndLog(builder, "");
+
             foreach (var c in db.ListCollectionNamesAsync().Result.ToListAsync().Result)
             {
                 var docs = db.GetCollection<BsonDocument>(c).Indexes.List().ToList();
